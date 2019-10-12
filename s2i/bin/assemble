@@ -31,7 +31,10 @@ env
 ls -lR /tmp/
 
 mkdir -p $RUNTIME_PATH 
-cp *.jar "$RUNTIME_PATH/" 
+
+tar tvf  build_result.tar.gz
+
+tar -xzf build_result.tar.gz -C $RUNTIME_PATH
 
 ls -lR $RUNTIME_PATH 
 
