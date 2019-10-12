@@ -8,5 +8,9 @@
 #
 
 RUNTIME_PATH=/opt/app-root/runtime
+env
+
+ls -lR /tmp/
+
 java -jar $(ls $RUNTIME_PATH/*[0-9].jar)
 

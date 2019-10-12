@@ -26,7 +26,14 @@ cp -Rf /tmp/src/. ./
 
 pwd 
 
+env
+
+ls -lR /tmp/
+
 mkdir -p $RUNTIME_PATH 
 cp *.jar "$RUNTIME_PATH/" 
+
+ls -lR $RUNTIME_PATH 
+
 #exec /usr/libexec/s2i/assemble
 
