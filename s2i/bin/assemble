@@ -32,9 +32,11 @@ ls -lR /tmp/
 
 mkdir -p $RUNTIME_PATH 
 
-tar tvf  build_result.tar.gz
-
-tar -xzf build_result.tar.gz -C $RUNTIME_PATH
+if [ -z ${APP_NAME} ]; then
+  mv /tmp/src/*.jar $RUNTIME_PATH 
+else
+  mv /tmp/src/${APP_NAME}-*.jar $RUNTIME_PATH 
+fi
 
 ls -lR $RUNTIME_PATH 
 
