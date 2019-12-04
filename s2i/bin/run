@@ -12,5 +12,5 @@ env
 
 ls -lR /tmp/
 
-java -jar $(ls $RUNTIME_PATH/*[0-9].jar)
+java -jar $(ls $RUNTIME_PATH/*[0-9].*ar)
 
