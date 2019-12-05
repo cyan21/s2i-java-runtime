@@ -45,5 +45,5 @@ EXPOSE 8080
 
 # TODO: Set the default CMD for the image
 #CMD ["/usr/libexec/s2i/usage"]
-CMD ["$(ls /opt/app-root/${ART_ID}*)"]
-ENTRYPOINT ["java", "-jar"]
+#CMD ["$(ls /opt/app-root/${ART_ID}*)"]
+ENTRYPOINT ["java", "-jar", "gs-rest-service-0.1.1-20191205.075831-1.jar"]
