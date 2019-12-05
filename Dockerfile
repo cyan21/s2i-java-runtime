@@ -26,7 +26,7 @@ RUN yum install -y curl java-1.8.0-openjdk-devel &&  \
 #COPY ./s2i/bin/ /usr/libexec/s2i
 #RUN chmod -R +x /usr/libexec/s2i
 
-RUN mkdir /opt/app-root
+#RUN mkdir /opt/app-root
 
 # download app from Artifactory 
 RUN version=$(curl -u${ART_USER}:${ART_PASS} "${ART_URL}/api/search/latestVersion?g=${GROUP_ID}&a=${ART_ID}&v=${ART_VERSION}&repos=${REPO}") && curl -u${ART_USER}:${ART_PASS} "${ART_URL}/${REPO}/{GROUP_ID}/${ART_ID}/${ART_VERSION}/${ART_ID}-${version}.jar" -O && mv ${ART_ID}* /opt/app-root/ 
