@@ -7,6 +7,11 @@ LABEL maintainer="yann.chaysinh@gmail.com"
 # TODO: Rename the builder environment variable to inform users about application you provide them
 ARG JAVA_VERSION="1.8-131"
 
+ARG GROUP_ID=org.springframework
+ARG ART_ID=gs-rest-service
+ARG ART_VERSION=0.1.1-SNAPSHOT
+AEG REPO=libs-snapshot-local
+
 # TODO: Set labels used in OpenShift to describe the builder image
 LABEL io.k8s.description="Platform for building springboot apps" \
       io.k8s.display-name="java-runtime 0.0.1" \
@@ -22,12 +27,8 @@ RUN yum install -y curl java-1.8.0-openjdk-devel &&  \
 #RUN chmod -R +x /usr/libexec/s2i
 
 # download app from Artifactory 
-GROUP_ID=org.springframework
-ART_ID=gs-rest-service
-ART_VERSION=0.1.1-SNAPSHOT
-REPO=libs-snapshot-local
 
-curl -u${ART_USER}:${ART_PASS} ${ART_URL}/api/search/latestVersion?g=${GROUP_ID}&a=${ART_ID}&v=${ART_VERSION}repos=${REPO}
+RUN curl -u${ART_USER}:${ART_PASS} ${ART_URL}/api/search/latestVersion?g=${GROUP_ID}&a=${ART_ID}&v=${ART_VERSION}repos=${REPO}
 
 
 RUN chown -R 1001:1001 /opt/app-root
