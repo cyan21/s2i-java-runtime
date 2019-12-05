@@ -27,9 +27,7 @@ RUN yum install -y curl java-1.8.0-openjdk-devel &&  \
 #RUN chmod -R +x /usr/libexec/s2i
 
 # download app from Artifactory 
-
-RUN curl -u${ART_USER}:${ART_PASS} ${ART_URL}/api/search/latestVersion?g=${GROUP_ID}&a=${ART_ID}&v=${ART_VERSION}repos=${REPO}
-
+RUN version=$(curl -u${ART_USER}:${ART_PASS} "${ART_URL}/api/search/latestVersion?g=${GROUP_ID}&a=${ART_ID}&v=${ART_VERSION}&repos=${REPO}") && curl -u${ART_USER}:${ART_PASS} "${ART_URL}/${REPO}/{GROUP_ID}/${ART_ID}/${ART_VERSION}/${ART_ID}-${version}.jar" -O
 
 RUN chown -R 1001:1001 /opt/app-root
 
@@ -41,4 +39,4 @@ EXPOSE 8080
 
 # TODO: Set the default CMD for the image
 #CMD ["/usr/libexec/s2i/usage"]
-CMD ["java", "-jar", "$(ls ${ART_ID}*[0-9].*ar)"]
+CMD ["java", "-jar", "$(ls ${ART_ID}*)"]
