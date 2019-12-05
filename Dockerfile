@@ -10,7 +10,7 @@ ARG JAVA_VERSION="1.8-131"
 ARG GROUP_ID=org.springframework
 ARG ART_ID=gs-rest-service
 ARG ART_VERSION=0.1.1-SNAPSHOT
-AEG REPO=libs-snapshot-local
+ARG REPO=libs-snapshot-local
 
 # TODO: Set labels used in OpenShift to describe the builder image
 LABEL io.k8s.description="Platform for building springboot apps" \
