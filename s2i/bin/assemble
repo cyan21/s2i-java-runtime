@@ -32,11 +32,26 @@ ls -lR /tmp/
 
 mkdir -p $RUNTIME_PATH 
 
-if [ -z ${APP_NAME} ]; then
-  mv /tmp/src/*.jar $RUNTIME_PATH 
+echo "---> Setting up the JFrog CLI ..."
+jfrog rt c artifactory --url=$ART_URL --user=$ART_USER --password=$ART_PASS
+
+jfrog rt ping --server-id=artifactory
+
+if [ $? -ne 0 ]; then
+  echo "[ERROR] can't reach Artifactory via this URL : $ART_URL"
+  exit 1
 else
-  mv /tmp/src/${APP_NAME}-* $RUNTIME_PATH 
+  echo "[INFO] ping OK to Artifactory ($ART_URL)"
 fi
+
+GROUP_ID=org.springframework
+ART_ID=gs-rest-service
+ART_VERSION=0.1.1-SNAPSHOT
+REPO=libs-snapshot-local
+
+jfrog rt curl "/api/search/latestVersion?g=${GROUP_ID}&a=${ART_ID}&v=${ART_VERSION}repos=${REPO}"
+
+mv /tmp/src/${ART_ID}* $RUNTIME_PATH/
 
 ls -lR $RUNTIME_PATH 
 
