@@ -26,12 +26,14 @@ RUN yum install -y curl java-1.8.0-openjdk-devel &&  \
 #COPY ./s2i/bin/ /usr/libexec/s2i
 #RUN chmod -R +x /usr/libexec/s2i
 
-# download app from Artifactory 
-RUN version=$(curl -u${ART_USER}:${ART_PASS} "${ART_URL}/api/search/latestVersion?g=${GROUP_ID}&a=${ART_ID}&v=${ART_VERSION}&repos=${REPO}") && curl -u${ART_USER}:${ART_PASS} "${ART_URL}/${REPO}/{GROUP_ID}/${ART_ID}/${ART_VERSION}/${ART_ID}-${version}.jar" -O
+RUN mkdir /opt/app-root
 
-RUN ls -l ${ART_ID}*
+# download app from Artifactory 
+RUN version=$(curl -u${ART_USER}:${ART_PASS} "${ART_URL}/api/search/latestVersion?g=${GROUP_ID}&a=${ART_ID}&v=${ART_VERSION}&repos=${REPO}") && curl -u${ART_USER}:${ART_PASS} "${ART_URL}/${REPO}/{GROUP_ID}/${ART_ID}/${ART_VERSION}/${ART_ID}-${version}.jar" -O && mv ${ART_ID}* /opt/app-root/ 
 
 RUN chown -R 1001:1001 /opt/app-root
+
+RUN ls -l /opt/app-root/${ART_ID}*
 
 # This default user is created in the openshift/base-centos7 image
 USER 1001
@@ -41,4 +43,5 @@ EXPOSE 8080
 
 # TODO: Set the default CMD for the image
 #CMD ["/usr/libexec/s2i/usage"]
-CMD ["java", "-jar", "$(ls ${ART_ID}*)"]
+CMD ["$(ls /opt/app-root/${ART_ID}*)"]
+ENTRYPOINT ["java -jar"]
