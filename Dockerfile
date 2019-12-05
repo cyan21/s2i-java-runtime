@@ -14,13 +14,21 @@ LABEL io.k8s.description="Platform for building springboot apps" \
       io.openshift.tags="runtime,openjdk-1.8.131,"
 
 
-RUN yum install -y java-1.8.0-openjdk-devel &&  \
+RUN yum install -y curl java-1.8.0-openjdk-devel &&  \
     yum clean all -y
 
 # sets io.openshift.s2i.scripts-url label that way, or update that label
-COPY ./s2i/bin/ /usr/libexec/s2i
+#COPY ./s2i/bin/ /usr/libexec/s2i
+#RUN chmod -R +x /usr/libexec/s2i
 
-RUN chmod -R +x /usr/libexec/s2i
+# download app from Artifactory 
+GROUP_ID=org.springframework
+ART_ID=gs-rest-service
+ART_VERSION=0.1.1-SNAPSHOT
+REPO=libs-snapshot-local
+
+curl -u${ART_USER}:${ART_PASS} ${ART_URL}/api/search/latestVersion?g=${GROUP_ID}&a=${ART_ID}&v=${ART_VERSION}repos=${REPO}
+
 
 RUN chown -R 1001:1001 /opt/app-root
 
@@ -31,4 +39,5 @@ USER 1001
 EXPOSE 8080
 
 # TODO: Set the default CMD for the image
-CMD ["/usr/libexec/s2i/usage"]
+#CMD ["/usr/libexec/s2i/usage"]
+CMD ["java", "-jar", "$(ls ${ART_ID}*[0-9].*ar)"]
