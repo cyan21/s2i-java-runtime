@@ -35,6 +35,8 @@ RUN chown -R 1001:1001 /opt/app-root
 
 RUN ls -l /opt/app-root/${ART_ID}*
 
+RUN java -version
+
 # This default user is created in the openshift/base-centos7 image
 USER 1001
 
@@ -44,4 +46,4 @@ EXPOSE 8080
 # TODO: Set the default CMD for the image
 #CMD ["/usr/libexec/s2i/usage"]
 CMD ["$(ls /opt/app-root/${ART_ID}*)"]
-ENTRYPOINT ["java -jar"]
+ENTRYPOINT ["java", "-jar"]
